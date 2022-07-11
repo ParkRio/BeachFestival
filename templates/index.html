@@ -18,7 +18,7 @@
 
         $(document).ready(function () {
             insert_DB()
-            get_beach_list()
+            get_allBeach_list()
         })
 
         function insert_DB() {
@@ -31,19 +31,36 @@
             })
         }
 
-        function get_beach_list() {
+        function get_allBeach_list() {
             let selectValue = document.getElementById('selectBox').value
             $.ajax({
                 type: "GET",
                 url: "/api/search",
                 data: {},
                 success: function (response) {
-                    console.log(response)
+                    console.log(response[2])
+                    let rows = response[2]['beach_list']
+                    for (let i=0; i<rows.length; i++) {
+                        let sta_nm = rows[i]['정점명']
+                        let sido_nm = rows[i]['시도명']
+                        let gugun_nm = rows[i]['구군명']
+                        let site = rows[i]['관련사이트']
+
+                        let temp_html = `<ol class="list-group">
+                                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">${sta_nm}</div>
+                                                    ${sido_nm} ${gugun_nm} --- 추가정보 : ${site}
+                                                </div>
+                                            </li>
+                                        </ol>`
+
+                        $('#list').append(temp_html)
+                    }
+
                 }
             })
         }
-
-
 
 
         //        $(document).ready(function () {
@@ -129,6 +146,7 @@
             position: relative;
             text-align: center;
             top: 50px;
+            left: 80px
         }
 
         .header h1 {
@@ -149,7 +167,12 @@
         .select-options {
             top: 5rem;
             width: 500px;
-            margin: 100px auto auto 610px;
+            margin: 100px auto auto auto;
+        }
+        .beach_list {
+            top: 5rem;
+            width: 500px;
+            margin: 50px auto auto auto;
         }
     </style>
 </head>
@@ -171,6 +194,8 @@
         <option value="강원">강원</option>
         <option value="제주">제주</option>
     </select>
+</div>
+<div class="beach_list" id="list">
 </div>
 </body>
 </html>
