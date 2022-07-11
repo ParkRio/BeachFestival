@@ -2,9 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Beach Festival</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            insert_DB()
+            get_beach_list()
+        })
+
+        function insert_DB() {
+            $.ajax({
+                type: "GET",
+                url: "/",
+                data: {},
+                success: function (response) {
+                }
+            })
+        }
+
+        function get_beach_list() {
+            let selectValue = document.getElementById('selectBox').value
+            $.ajax({
+                type: "GET",
+                url: "/api/search",
+                data: {},
+                success: function (response) {
+                    console.log(response)
+                }
+            })
+        }
+
+
+
+
+        //        $(document).ready(function () {
+        //            // get_list()
+        //            insert_DB()
+        //        })
+        //
+        //        function insert_DB() {
+        //            let dosi = ["%EC%A0%9C%EC%A3%BC", "%EA%B0%95%EC%9B%90", "%EC%9D%B8%EC%B2%9C"];
+        //
+        //            for (let i=0; i<dosi.length; i++) {
+        //                let beachUrl = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM="+dosi[i]+"&resultType=JSON&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
+        //                console.log(beachUrl)
+        //                $.ajax({
+        //                type: "GET",
+        //                url: beachUrl,
+        //                data: {},
+        //                success: function (response) {
+        //                    console.log(JSON.parse(response))
+        //                }
+        //            })
+        //            }
+        //        }
+
+        // $(document).ready(function () {
+        //     get_list()
+        // })
+        //
+        // function get_list() {
+        //     let selectValue = document.getElementById('selectBox').value
+        //     if (selectValue == "3") {
+        //         let Jeju = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EC%A0%9C%EC%A3%BC&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
+        //
+        //         $.ajax({
+        //             type: "GET",
+        //             url: Jeju,
+        //             data: {},
+        //             success: function (response) {
+        //                 console.log(response)
+        //             }
+        //         })
+        //     }
+        //     else if (selectValue == "2") {
+        //         let Gangwon = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EA%B0%95%EC%9B%90&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
+        //
+        //         $.ajax({
+        //             type: "GET",
+        //             url: Gangwon,
+        //             data: {},
+        //             success: function (response) {
+        //                 console.log(response)
+        //             }
+        //         })
+        //     }
+        //     else if (selectValue == "1") {
+        //         let Incheon = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EC%9D%B8%EC%B2%9C&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
+        //
+        //         $.ajax({
+        //             type: "GET",
+        //             url: Incheon,
+        //             data: {},
+        //             success: function (response) {
+        //                 console.log(response)
+        //             }
+        //         })
+        //     }
+        //
+        // }
+
+    </script>
+
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .background {
+            background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
+            background-size: cover;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            top: 50px;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            color: snow;
+        }
+
+        .header h1, .header button {
+            display: inline;
+        }
+
+        .header button {
+            position: relative;
+            left: 300px;
+            margin-left: 10px;
+        }
+
+        .select-options {
+            top: 5rem;
+            width: 500px;
+            margin: 100px auto auto 610px;
+        }
+    </style>
+</head>
+<body class="background">
+<div class="header">
+    <tr>
+        <td><h1>Beach Festival</h1></td>
+        <td>
+            <button type="button" class="btn btn-outline-success">Login</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-outline-warning">Sign Up</button>
+        </td>
+    </tr>
+</div>
+<div class="select-options">
+    <select class="form-select" size="3" aria-label="size 3 select example" id="selectBox" onchange="get_beach_list()">
+        <option selected value="인천">인천</option>
+        <option value="강원">강원</option>
+        <option value="제주">제주</option>
+    </select>
+</div>
 </body>
 </html>
