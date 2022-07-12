@@ -14,77 +14,6 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-
-        $(document).ready(function () {
-            //insert_DB()
-            // get_allBeach_list()
-        })
-        {##}
-        {#function insert_DB() {#}
-        {#     $.ajax({#}
-        {#         type: "GET",#}
-        {#         url: "/",#}
-        {#         data: {},#}
-        {#         success: function (response) {#}
-        {#         }#}
-        {#     })#}
-        {# }#}
-
-        // function get_allBeach_list() {
-        //     let selectValue = document.getElementById('selectBox').value
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/api/search",
-        //         data: {},
-        //         success: function (response) {
-        //             console.log(response[2])
-        //             let rows = response[2]['beach_list']
-        //             for (let i=0; i<rows.length; i++) {
-        //                 let sta_nm = rows[i]['정점명']
-        //                 let sido_nm = rows[i]['시도명']
-        //                 let gugun_nm = rows[i]['구군명']
-        //                 let site = rows[i]['관련사이트']
-        //
-        //                 let temp_html = `<ol class="list-group">
-        //                                         <li class="list-group-item d-flex justify-content-between align-items-start">
-        //                                         <div class="ms-2 me-auto">
-        //                                             <div class="fw-bold">${sta_nm}</div>
-        //                                             ${sido_nm} ${gugun_nm} --- 추가정보 : ${site}
-        //                                         </div>
-        //                                     </li>
-        //                                 </ol>`
-        //
-        //                 $('#list').append(temp_html)
-        //             }
-        //
-        //         }
-        //     })
-        // }
-
-
-        //        $(document).ready(function () {
-        //            // get_list()
-        //            insert_DB()
-        //        })
-        //
-        //        function insert_DB() {
-        //            let dosi = ["%EC%A0%9C%EC%A3%BC", "%EA%B0%95%EC%9B%90", "%EC%9D%B8%EC%B2%9C"];
-        //
-        //            for (let i=0; i<dosi.length; i++) {
-        //                let beachUrl = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM="+dosi[i]+"&resultType=JSON&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
-        //                console.log(beachUrl)
-        //                $.ajax({
-        //                type: "GET",
-        //                url: beachUrl,
-        //                data: {},
-        //                success: function (response) {
-        //                    console.log(JSON.parse(response))
-        //                }
-        //            })
-        //            }
-        //        }
-    </script>
 
     <style>
         * {
@@ -94,7 +23,11 @@
         .background {
             background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
             background-size: cover;
-            height: 500px;
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
         }
 
         .header {
@@ -125,13 +58,108 @@
             margin: 100px auto auto auto;
         }
 
-        .beach_list {
-            top: 5rem;
-            width: 400px;
-            margin: 50px auto auto auto;
-            text-align: center;
+
+
+        .table {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            table-layout: fixed;
+            background-color: snow;
+            border-radius: 30px;
         }
+
+        .table th {
+            border-top-style: none;
+        }
+
+        td {
+            background-color: white;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        td > a, a:visited, a:hover, a:active {
+            color: black;
+        }
+
+        thead:first-child tr:first-child th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        thead:first-child tr:first-child th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        tbody:last-child tr:last-child td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+
+        tbody:last-child tr:last-child td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+
+        tr.highlight > td {
+        background-color: darkorange;
+        color: white;
+        }
+
+        tr.highlight > td > a {
+        background-color: darkorange;
+        color: white;
+        }
+
+        .paging-div {
+          padding: 15px 0 5px 10px;
+          display: table;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+        }
+
+
     </style>
+    <script>
+        let rows = {{ rows|tojson }};
+        let rows_list = [];
+        for (let i = 0; i < rows.length; i++) {
+            rows_list.push(rows[i]['정점명'])
+        }
+        console.log(rows_list)
+
+        function find_beach() {
+            let word = $('#input_word').val()
+            if (rows_list.includes(word)) {
+                // 리스트에 하이라이트
+
+                $(`#word-${word}`).addClass("highlight")
+                $(`#word-${word}`).siblings().removeClass("highlight")
+                $(`#word-${word}`)[0].scrollIntoView()
+
+            } else {
+                alert("정확한 해변명을 입력해주세요.")
+            }
+        }
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            //insert_DB()
+            // get_allBeach_list()
+        })
+        {##}
+        {#function insert_DB() {#}
+        {#     $.ajax({#}
+        {#         type: "GET",#}
+        {#         url: "/",#}
+        {#         data: {},#}
+        {#         success: function (response) {#}
+        {#         }#}
+        {#     })#}
+        {# }#}
+
+    </script>
 </head>
 <body class="background">
 <div class="header">
@@ -146,35 +174,47 @@
     </tr>
 </div>
 <div class="select-options">
-    <select class="form-select" size="3" aria-label="size 3 select example" id="selectBox" onchange="get_beach_list()">
-        <option selected value="인천">인천</option>
-        <option value="강원">강원</option>
-        <option value="제주">제주</option>
-    </select>
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" id="input_word" placeholder="해수욕장 이름을 입력해주세요."
+               aria-label="Search"
+               aria-describedby="search-addon"/>
+        <button type="button" class="btn btn-outline-primary" onclick="find_beach()">검색</button>
+    </div>
 </div>
-<div class="beach_list" id="list">
-    <ol class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                {% for row in rows %}
-                    {% set sta_nm = row['정점명'] %}
-                    {% set sido_nm = row['시도명'] %}
-                    {% set gugun_nm = row['구군명'] %}
-                    {% set site = row['관련사이트'] %}
-                    {% set tel = row['해수욕장 비상연락처'] %}
-                    {% set sand = row['모래'] %}
-                    <div class="fw-bold">{{ sta_nm }} 해수욕장 || {{ sido_nm }} {{ gugun_nm }} {{ sta_nm }}
-                        &nbsp;&nbsp;
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="red" fill="currentColor"
-                             class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                        </svg>
-                    </div>
-                    <hr width=”500px” color=”brown” noshade/>
-                {% endfor %}
-            </div>
-        </li>
-    </ol>
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col" style="width:30%">정점명</th>
+        <th scope="col">주소</th>
+
+    </tr>
+    </thead>
+    <tbody id="tbody-box">
+    {% for row in rows %}
+        <tr id="word-{{ row['정점명'] }}">
+            <td><a href="http://localhost:5000/detail/{{ row['정점명'] }}">{{ row['정점명'] }}</a></td>
+            <td>
+                {{ row['시도명'] }} {{ row['구군명'] }} {{ row['정점명'] }}
+                &nbsp;&nbsp;
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="red" fill="currentColor"
+                     class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                </svg>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="paging-div">
+<nav aria-label="...">
+  <ul class="pagination pagination-lg">
+    <li class="page-item active" aria-current="page">
+      <span class="page-link">1</span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+  </ul>
+</nav>
 </div>
 </body>
 </html>
