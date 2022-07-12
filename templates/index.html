@@ -5,121 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Beach Festival</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
-
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    <style>
-        * {
-            font-family: 'Jua', sans-serif;
-        }
-
-        .background {
-            background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
-            background-size: cover;
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-        }
-
-        .header {
-            position: relative;
-            text-align: center;
-            top: 50px;
-            left: 80px
-        }
-
-        .header h1 {
-            font-size: 4rem;
-            color: snow;
-        }
-
-        .header h1, .header button {
-            display: inline;
-        }
-
-        .header button {
-            position: relative;
-            left: 300px;
-            margin-left: 10px;
-        }
-
-        .select-options {
-            top: 5rem;
-            width: 500px;
-            margin: 100px auto auto auto;
-        }
-
-
-
-        .table {
-            width: 80%;
-            max-width: 800px;
-            margin: 50px auto;
-            table-layout: fixed;
-            background-color: snow;
-            border-radius: 30px;
-        }
-
-        .table th {
-            border-top-style: none;
-        }
-
-        td {
-            background-color: white;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        td > a, a:visited, a:hover, a:active {
-            color: black;
-        }
-
-        thead:first-child tr:first-child th:first-child {
-            border-radius: 10px 0 0 0;
-        }
-
-        thead:first-child tr:first-child th:last-child {
-            border-radius: 0 10px 0 0;
-        }
-
-        tbody:last-child tr:last-child td:first-child {
-            border-radius: 0 0 0 10px;
-        }
-
-        tbody:last-child tr:last-child td:last-child {
-            border-radius: 0 0 10px 0;
-        }
-
-        tr.highlight > td {
-        background-color: darkorange;
-        color: white;
-        }
-
-        tr.highlight > td > a {
-        background-color: darkorange;
-        color: white;
-        }
-
-        .paging-div {
-          padding: 15px 0 5px 10px;
-          display: table;
-          margin-left: auto;
-          margin-right: auto;
-          text-align: center;
-        }
-
-
-    </style>
     <script>
         let rows = {{ rows|tojson }};
         let rows_list = [];
@@ -147,6 +44,7 @@
         $(document).ready(function () {
             //insert_DB()
             // get_allBeach_list()
+
         })
         {##}
         {#function insert_DB() {#}
@@ -160,18 +58,257 @@
         {# }#}
 
     </script>
+    <script>
+        // {% if msg %}
+        //     alert("{{ msg }}")
+        // {% endif %}
+
+        function sign_in() {
+            let username = $("#input-username").val()
+            let password = $("#input-password").val()
+
+            if (username == "") {
+                $("#help-id-login").text("아이디를 입력해주세요.")
+                $("#input-username").focus()
+                return;
+            } else {
+                $("#help-id-login").text("")
+            }
+
+            if (password == "") {
+                $("#help-password-login").text("비밀번호를 입력해주세요.")
+                $("#input-password").focus()
+                return;
+            } else {
+                $("#help-password-login").text("")
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_in",
+                data: {
+                    username_give: username,
+                    password_give: password
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token'], {path: '/'});
+                        window.location.replace("/")
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            });
+        }
+
+        function sign_up() {
+            let username = $("#input-username").val()
+            let password = $("#input-password").val()
+            let password2 = $("#input-password2").val()
+            console.log(username, password, password2)
+
+
+            if ($("#help-id").hasClass("is-danger")) {
+                alert("아이디를 다시 확인해주세요.")
+                return;
+            } else if (!$("#help-id").hasClass("is-success")) {
+                alert("아이디 중복확인을 해주세요.")
+                return;
+            }
+
+            if (password == "") {
+                $("#help-password").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-password").focus()
+                return;
+            } else if (!is_password(password)) {
+                $("#help-password").text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자").removeClass("is-safe").addClass("is-danger")
+                $("#input-password").focus()
+                return
+            } else {
+                $("#help-password").text("사용할 수 있는 비밀번호입니다.").removeClass("is-danger").addClass("is-success")
+            }
+            if (password2 == "") {
+                $("#help-password2").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-password2").focus()
+                return;
+            } else if (password2 != password) {
+                $("#help-password2").text("비밀번호가 일치하지 않습니다.").removeClass("is-safe").addClass("is-danger")
+                $("#input-password2").focus()
+                return;
+            } else {
+                $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/save",
+                data: {
+                    username_give: username,
+                    password_give: password
+                },
+                success: function (response) {
+                    alert("회원가입을 축하드립니다!")
+                    window.location.replace("/")
+                }
+            });
+
+        }
+
+        function toggle_sign_up() {
+            $("#sign-up-box").toggleClass("is-hidden")
+            $("#div-sign-in-or-up").toggleClass("is-hidden")
+            $("#btn-check-dup").toggleClass("is-hidden")
+            $("#help-id").toggleClass("is-hidden")
+            $("#help-password").toggleClass("is-hidden")
+            $("#help-password2").toggleClass("is-hidden")
+        }
+
+        function is_nickname(asValue) {
+            var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+            return regExp.test(asValue);
+        }
+
+        function is_password(asValue) {
+            var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+            return regExp.test(asValue);
+        }
+
+        function check_dup() {
+            let username = $("#input-username").val()
+            console.log(username)
+            if (username == "") {
+                $("#help-id").text("아이디를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-username").focus()
+                return;
+            }
+            if (!is_nickname(username)) {
+                $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                $("#input-username").focus()
+                return;
+            }
+            $("#help-id").addClass("is-loading")
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/check_dup",
+                data: {
+                    username_give: username
+                },
+                success: function (response) {
+
+                    if (response["exists"]) {
+                        $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
+                        $("#input-username").focus()
+                    } else {
+                        $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
+                    }
+                    $("#help-id").removeClass("is-loading")
+
+                }
+            });
+        }
+
+    </script>
+
 </head>
-<body class="background">
+<body>
+<div class="background">
+<section class="contents">
 <div class="header">
     <tr>
-        <td><h1>Beach Festival</h1></td>
         <td>
-            <button type="button" class="btn btn-outline-success">Login</button>
+            <a herf="/">
+                <h1>Beach Festival</h1>
+            </a>
         </td>
         <td>
-            <button type="button" class="btn btn-outline-warning">Sign Up</button>
+            <button type="button" class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>
         </td>
     </tr>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Beach Festival</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="box" style="max-width: 480px;margin:auto">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <div class="field has-addons">
+                            <div class="control has-icons-left" style="width:100%">
+                                <input id="input-username" class="input" type="text" placeholder="아이디">
+                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div id="btn-check-dup" class="control is-hidden">
+                                <button class="button is-sparta" onclick="check_dup()">중복확인</button>
+                            </div>
+
+                        </div>
+                        <p id="help-id" class="help is-hidden">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+                        <p id="help-id-login" class="help is-danger"></p>
+
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input id="input-password" class="input" type="password" placeholder="비밀번호">
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용
+                                가능합니다.</p>
+                        </div>
+
+
+                    </div>
+                    <div id="div-sign-in-or-up" class="has-text-centered">
+                        <nav class="level is-mobile">
+                            <button class="level-item button is-sparta" onclick="sign_in()">
+                                로그인
+                            </button>
+
+                        </nav>
+                        <hr>
+                        <h4 class="mb-3">아직 회원이 아니라면</h4>
+                        <nav class="level is-mobile">
+
+                            <button class="level-item button is-sparta is-outlined"
+                                    onclick="toggle_sign_up()">
+                                회원가입하기
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div id="sign-up-box" class="is-hidden">
+                        <div class="mb-5">
+                            <div class="field">
+                                <div class="control has-icons-left" style="width:100%">
+                                    <input id="input-password2" class="input" type="password"
+                                           placeholder="비밀번호 재입력">
+                                    <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                </div>
+                                <p id="help-password2" class="help is-hidden">비밀번호를 다시 한 번 입력해주세요.</p>
+
+                            </div>
+                        </div>
+                        <nav class="level is-mobile">
+                            <button class="level-item button is-sparta" onclick="sign_up()">
+                                회원가입
+                            </button>
+                            <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                                취소
+                            </button>
+                        </nav>
+                    </div>
+
+
+                </div>
+            </article>
+        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="select-options">
     <div class="input-group rounded">
@@ -206,15 +343,17 @@
     </tbody>
 </table>
 <div class="paging-div">
-<nav aria-label="...">
-  <ul class="pagination pagination-lg">
-    <li class="page-item active" aria-current="page">
-      <span class="page-link">1</span>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-  </ul>
-</nav>
+    <nav aria-label="...">
+      <ul class="pagination pagination-lg">
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">1</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+      </ul>
+    </nav>
+</div>
+</section>
 </div>
 </body>
 </html>

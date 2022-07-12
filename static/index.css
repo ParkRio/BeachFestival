@@ -1,0 +1,129 @@
+* {
+    font-family: 'Jua', sans-serif;
+}
+
+body {
+    position: relative;
+}
+
+.background {
+    background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
+    background-size: cover;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+.modal-backdrop {
+    position: relative;
+}
+
+.contents {
+    position: relative;
+}
+
+.header {
+    position: relative;
+    text-align: center;
+    top: 50px;
+    left: 30px
+}
+
+.header h1 {
+    font-size: 4rem;
+    color: snow;
+}
+
+.header h1, .header button {
+    display: inline;
+}
+
+.header button {
+    position: relative;
+    left: 300px;
+    margin-left: 10px;
+}
+
+.select-options {
+    top: 5rem;
+    width: 500px;
+    margin: 100px auto auto auto;
+}
+
+.table {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    table-layout: fixed;
+    background-color: snow;
+    border-radius: 30px;
+}
+
+.table th {
+    border-top-style: none;
+}
+
+td {
+    background-color: white;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+td > a, a:visited, a:hover, a:active {
+    color: black;
+}
+
+thead:first-child tr:first-child th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+thead:first-child tr:first-child th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+tbody:last-child tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+tbody:last-child tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+tr.highlight > td {
+    background-color: darkorange;
+    color: white;
+}
+
+tr.highlight > td > a {
+    background-color: darkorange;
+    color: white;
+}
+
+.paging-div {
+    padding: 15px 0 5px 10px;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.button.is-sparta {
+    background-color: #e8344e;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: #e8344e;
+    color: #e8344e !important;
+}
+
+.help {
+    color: gray;
+}
+

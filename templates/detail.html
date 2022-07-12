@@ -4,100 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Beach Festival</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
-
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='detail.css') }}" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    <style>
-        * {
-            font-family: 'Jua', sans-serif;
-        }
 
-        .background {
-            background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
-            background-size: cover;
-            height: 500px;
-        }
-
-        .header {
-            position: relative;
-            text-align: center;
-            top: 50px;
-            left: 80px
-        }
-
-        .header h1 {
-            font-size: 4rem;
-            color: snow;
-        }
-
-        .header h1, .header button {
-            display: inline;
-        }
-
-        .header button {
-            position: relative;
-            left: 300px;
-            margin-left: 10px;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 700px;
-            margin: 150px auto;
-            padding: 20px;
-            height: 400px;
-            background-color: white;
-
-            border: solid 1px gray;
-            border-radius: 10px;
-        }
-
-        span.example {
-            color: gray;
-            font-size: 14px;
-        }
-
-        .btn-sparta {
-            color: #fff;
-            background-color: #e8344e;
-            border-color: #e8344e;
-        }
-
-        .btn-outline-sparta {
-            color: #e8344e;
-            background-color: transparent;
-            background-image: none;
-            border-color: #e8344e;
-        }
-
-        .test {
-            width: 100%;
-        }
-
-        .test2 {
-            padding: 10px;
-            float: left;
-            width: 50%
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
 </head>
 <body class="background">
 <div class="header">
     <tr>
-        <td><h1>Beach Festival</h1></td>
+        <a href="/">
+            <td><h1>Beach Festival</h1></td>
+        </a>
         <td>
             <button type="button" class="btn btn-outline-success">Login</button>
         </td>
@@ -138,7 +65,55 @@
         </div>
     </div>
 </div>
-</div>
+
+<section class="section">
+    <article class="media_comment">
+        <figure class="media-left" style="align-self: center">
+            <a class="image is-32x32" href="/user/{{ user_info.username }}">
+                <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
+            </a>
+        </figure>
+        <div class="media-content">
+            <div class="field">
+                <p class="control">
+	                  <input id="input-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?"
+	                         onclick='$("#modal-post").addClass("is-active")'>                </p>
+            </div>
+        </div>
+    </article>
+</section>
+<section class="section">
+    <div id="post-box" class="container_comment">
+        <div class="box">
+            <article class="media">
+                <div class="media-left">
+                    <a class="image is-64x64" href="#">
+                        <img class="is-rounded"
+                             src={{ url_for("static", filename="profile_pics/profile_placeholder.png") }} alt="Image">
+                    </a>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>홍길동</strong> <small>@username</small> <small>10분 전</small>
+                            <br>
+                            글을 적는 칸
+                        </p>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('', 'heart')">
+                                <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;<span class="like-num">2.7k</span>
+                            </a>
+                        </div>
+
+                    </nav>
+                </div>
+            </article>
+        </div>
+
+    </div>
+</section>
 </body>
 </html>{##}
 
