@@ -17,50 +17,50 @@
     <script>
 
         $(document).ready(function () {
-            insert_DB()
-            get_allBeach_list()
+            //insert_DB()
+            // get_allBeach_list()
         })
+        {##}
+        {#function insert_DB() {#}
+        {#     $.ajax({#}
+        {#         type: "GET",#}
+        {#         url: "/",#}
+        {#         data: {},#}
+        {#         success: function (response) {#}
+        {#         }#}
+        {#     })#}
+        {# }#}
 
-        function insert_DB() {
-            $.ajax({
-                type: "GET",
-                url: "/",
-                data: {},
-                success: function (response) {
-                }
-            })
-        }
-
-        function get_allBeach_list() {
-            let selectValue = document.getElementById('selectBox').value
-            $.ajax({
-                type: "GET",
-                url: "/api/search",
-                data: {},
-                success: function (response) {
-                    console.log(response[2])
-                    let rows = response[2]['beach_list']
-                    for (let i=0; i<rows.length; i++) {
-                        let sta_nm = rows[i]['정점명']
-                        let sido_nm = rows[i]['시도명']
-                        let gugun_nm = rows[i]['구군명']
-                        let site = rows[i]['관련사이트']
-
-                        let temp_html = `<ol class="list-group">
-                                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                <div class="ms-2 me-auto">
-                                                    <div class="fw-bold">${sta_nm}</div>
-                                                    ${sido_nm} ${gugun_nm} --- 추가정보 : ${site}
-                                                </div>
-                                            </li>
-                                        </ol>`
-
-                        $('#list').append(temp_html)
-                    }
-
-                }
-            })
-        }
+        // function get_allBeach_list() {
+        //     let selectValue = document.getElementById('selectBox').value
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/api/search",
+        //         data: {},
+        //         success: function (response) {
+        //             console.log(response[2])
+        //             let rows = response[2]['beach_list']
+        //             for (let i=0; i<rows.length; i++) {
+        //                 let sta_nm = rows[i]['정점명']
+        //                 let sido_nm = rows[i]['시도명']
+        //                 let gugun_nm = rows[i]['구군명']
+        //                 let site = rows[i]['관련사이트']
+        //
+        //                 let temp_html = `<ol class="list-group">
+        //                                         <li class="list-group-item d-flex justify-content-between align-items-start">
+        //                                         <div class="ms-2 me-auto">
+        //                                             <div class="fw-bold">${sta_nm}</div>
+        //                                             ${sido_nm} ${gugun_nm} --- 추가정보 : ${site}
+        //                                         </div>
+        //                                     </li>
+        //                                 </ol>`
+        //
+        //                 $('#list').append(temp_html)
+        //             }
+        //
+        //         }
+        //     })
+        // }
 
 
         //        $(document).ready(function () {
@@ -84,52 +84,6 @@
         //            })
         //            }
         //        }
-
-        // $(document).ready(function () {
-        //     get_list()
-        // })
-        //
-        // function get_list() {
-        //     let selectValue = document.getElementById('selectBox').value
-        //     if (selectValue == "3") {
-        //         let Jeju = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EC%A0%9C%EC%A3%BC&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
-        //
-        //         $.ajax({
-        //             type: "GET",
-        //             url: Jeju,
-        //             data: {},
-        //             success: function (response) {
-        //                 console.log(response)
-        //             }
-        //         })
-        //     }
-        //     else if (selectValue == "2") {
-        //         let Gangwon = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EA%B0%95%EC%9B%90&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
-        //
-        //         $.ajax({
-        //             type: "GET",
-        //             url: Gangwon,
-        //             data: {},
-        //             success: function (response) {
-        //                 console.log(response)
-        //             }
-        //         })
-        //     }
-        //     else if (selectValue == "1") {
-        //         let Incheon = "https://www.meis.go.kr/service/OceansBeachInfoService/getOceansBeachInfo?serviceKey=pC6KGxF2CQUBDiyG6fTy7G0w%2BAjs0JVe9jj48Wgnbwu6leKdptIuf031%2Fzh7sLvlgkVFFV7aDZbM5be150larA%3D%3D&pageNo=1&numOfRows=10&SIDO_NM=%EC%9D%B8%EC%B2%9C&resultType=XML&SG_APIM=2ug8Dm9qNBfD32JLZGPN64f3EoTlkpD8kSOHWfXpyrY"
-        //
-        //         $.ajax({
-        //             type: "GET",
-        //             url: Incheon,
-        //             data: {},
-        //             success: function (response) {
-        //                 console.log(response)
-        //             }
-        //         })
-        //     }
-        //
-        // }
-
     </script>
 
     <style>
@@ -140,6 +94,7 @@
         .background {
             background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
             background-size: cover;
+            height: 500px;
         }
 
         .header {
@@ -169,10 +124,12 @@
             width: 500px;
             margin: 100px auto auto auto;
         }
+
         .beach_list {
             top: 5rem;
-            width: 500px;
+            width: 400px;
             margin: 50px auto auto auto;
+            text-align: center;
         }
     </style>
 </head>
@@ -196,6 +153,28 @@
     </select>
 </div>
 <div class="beach_list" id="list">
+    <ol class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                {% for row in rows %}
+                    {% set sta_nm = row['정점명'] %}
+                    {% set sido_nm = row['시도명'] %}
+                    {% set gugun_nm = row['구군명'] %}
+                    {% set site = row['관련사이트'] %}
+                    {% set tel = row['해수욕장 비상연락처'] %}
+                    {% set sand = row['모래'] %}
+                    <div class="fw-bold">{{ sta_nm }} 해수욕장 || {{ sido_nm }} {{ gugun_nm }} {{ sta_nm }}
+                        &nbsp;&nbsp;
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="red" fill="currentColor"
+                             class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                        </svg>
+                    </div>
+                    <hr width=”500px” color=”brown” noshade/>
+                {% endfor %}
+            </div>
+        </li>
+    </ol>
 </div>
 </body>
 </html>
