@@ -19,6 +19,11 @@
 
     <script src="{{ url_for('static', filename='detail_comment.js') }}"></script>
 
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a76b02a3eab44eca245e0c8fba298673"></script>
+
+
+
 </head>
 <body class="background">
 <div class="header">
@@ -39,12 +44,14 @@
         <div>
             <h1 id="word" style="display: inline;">{{ word }} 해수욕장</h1>
         </div>
+        <a href="https://www.goodchoice.kr/product/result?keyword={{ word }}" target="_blank">
         <button id="btn-like" class="btn btn-sparta btn-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                  class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
                 <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
             </svg>
         </button>
+        </a>
     </div>
     <hr>
     <div class="test">
@@ -61,7 +68,20 @@
         </div>
         <div id="definitions">
             <div class="test2">
-                <img src="https://cdn.pixabay.com/photo/2013/01/17/02/17/busan-75137__340.jpg">
+                <div id="map" style="width:300px;height:250px;"></div>
+                <script>
+                    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+                    var options = { //지도를 생성할 때 필요한 기본 옵션
+                        center: new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }}), //지도의 중심좌표.
+                        level: 7 //지도의 레벨(확대, 축소 정도)
+                    };
+
+                    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+                    var markerPosition  = new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }});
+                    var marker = new kakao.maps.Marker({position: markerPosition});
+                    marker.setMap(map);
+                </script>
             </div>
         </div>
     </div>
