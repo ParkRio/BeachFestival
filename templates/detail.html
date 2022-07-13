@@ -17,6 +17,7 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
+    <script src="{{ url_for('static', filename='detail_comment.js') }}"></script>
 
 </head>
 <body class="background">
@@ -26,7 +27,7 @@
             <td><h1>Beach Festival</h1></td>
         </a>
         <td>
-            <button type="button" class="btn btn-outline-success">Login</button>
+            <button type="button" class="btn btn-outline-dark">Login</button>
         </td>
         <td>
             <button type="button" class="btn btn-outline-warning">Sign Up</button>
@@ -76,18 +77,22 @@
         <div class="media-content">
             <div class="field">
                 <p class="control">
-	                  <input id="input-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?"
-	                         onclick='$("#modal-post").addClass("is-active")'>                </p>
+                    <input id="textarea-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?">
+                </p>
+            </div>
+            <div class="posts_buttons">
+                <button class="button is-success" onclick="post()">Success</button>
             </div>
         </div>
     </article>
 </section>
+<br>
 <section class="section">
     <div id="post-box" class="container_comment">
         <div class="box">
             <article class="media">
                 <div class="media-left">
-                    <a class="image is-64x64" href="#">
+                    <a class="image is-64x64">
                         <img class="is-rounded"
                              src={{ url_for("static", filename="profile_pics/profile_placeholder.png") }} alt="Image">
                     </a>
@@ -103,7 +108,9 @@
                     <nav class="level is-mobile">
                         <div class="level-left">
                             <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('', 'heart')">
-                                <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;<span class="like-num">2.7k</span>
+                                <span class="icon is-small"><i class="fa fa-heart"
+                                                               aria-hidden="true"></i></span>&nbsp;<span
+                                    class="like-num">2.7k</span>
                             </a>
                         </div>
 
