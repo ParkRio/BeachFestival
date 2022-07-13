@@ -23,7 +23,6 @@
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a76b02a3eab44eca245e0c8fba298673"></script>
 
 
-
 </head>
 <body class="background">
 <div class="header">
@@ -45,12 +44,12 @@
             <h1 id="word" style="display: inline;">{{ word }} 해수욕장</h1>
         </div>
         <a href="https://www.goodchoice.kr/product/result?keyword={{ word }}" target="_blank">
-        <button id="btn-like" class="btn btn-sparta btn-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-            </svg>
-        </button>
+            <button id="btn-like" class="btn btn-sparta btn-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                </svg>
+            </button>
         </a>
     </div>
     <hr>
@@ -78,7 +77,7 @@
 
                     var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
-                    var markerPosition  = new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }});
+                    var markerPosition = new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }});
                     var marker = new kakao.maps.Marker({position: markerPosition});
                     marker.setMap(map);
                 </script>
@@ -86,6 +85,12 @@
         </div>
     </div>
 </div>
+<br>
+<section>
+    <p align="middle">
+    <iframe width="740" height="315" src="https://www.youtube.com/embed/xRbPAVnqtcs?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
+    </p>
+</section>
 
 <section class="section">
     <article class="media_comment">
@@ -142,5 +147,6 @@
     </div>
 </section>
 </body>
-</html>{##}
+</body>
+</html>
 

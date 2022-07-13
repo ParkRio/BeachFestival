@@ -463,6 +463,7 @@
         <button type="button" class="btn btn-outline-primary" onclick="find_beach()">검색</button>
     </div>
 </div>
+{% if datas|length > 0 %}
 <table class="table">
     <thead class="thead-light">
     <tr>
@@ -471,16 +472,16 @@
 
     </tr>
     </thead>
+    {% for data in datas %}
     <tbody id="tbody-box">
-    {% for row in rows %}
-        <tr id="word-{{ row['정점명'] }}">
-            <td><a href="http://localhost:5000/detail/{{ row['정점명'] }}">{{ row['정점명'] }}</a></td>
+        <tr id="word-{{ data['정점명'] }}">
+            <td><a href="http://localhost:5000/detail/{{ data['정점명'] }}">{{ data['정점명'] }}</a></td>
             <td>
-                {{ row['시도명'] }} {{ row['구군명'] }} {{ row['정점명'] }}
+                {{ data['시도명'] }} {{ data['구군명'] }} {{ data['정점명'] }}
                 &nbsp;&nbsp;
             </td>
             <td>
-                예약은 하트 클릭~ <a href="https://www.goodchoice.kr/product/result?keyword={{ row['정점명'] }}" target="_blank">
+                예약은 하트 클릭~ <a href="https://www.goodchoice.kr/product/result?keyword={{ data['정점명'] }}" target="_blank">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="red" fill="currentColor"
                      class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
                     <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
@@ -491,17 +492,30 @@
     {% endfor %}
     </tbody>
 </table>
-<div class="paging-div">
-    <nav aria-label="...">
-      <ul class="pagination pagination-lg">
-        <li class="page-item active" aria-current="page">
-          <span class="page-link">1</span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-      </ul>
-    </nav>
-</div>
+{% if block_start - 1 > 0 %}
+    <a href="{{url_for('home', page=block_start - 1)}}">[이전]</a>
+{% endif %}
+
+{% for i in range(block_start, block_end + 1) %}
+    {% if i > last_page_num %}
+
+    {% else %}
+        {% if i == page %}
+             <b>{{ i }}</b>
+        {% else %}
+             <a href="{{ url_for('home', page=i) }}">{{ i }}</a>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if block_end < last_page_num %}
+    <a href="{{ url_for('home', page=block_end + 1) }}">[다음]</a>
+{% endif %}
+
+{% else %}
+<h3>데이터가 존재하지 않습니다.</h3>
+{% endif %}
+
 </section>
 </div>
 </body>

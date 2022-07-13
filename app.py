@@ -1,3 +1,5 @@
+import math
+
 import jwt
 import datetime
 import hashlib
@@ -52,15 +54,42 @@ SECRET_KEY = 'SPARTA'
 
 @app.route('/', methods=["GET"])
 def main():
+    board = db.beach
+    # 페이지값 (디폴트 = 1)
+    page = request.args.get("page", 1, type=int)
+    # 한 페이지 당 몇 개의 게시물을 출력할 것인가
+    limit = 15
+
+    datas = list(board.find({}).skip((page-1) * limit).limit(limit))
+
+    # 게시글의 총 개수 세기 / 현재 51개 나옴 OK
+    tot_count = board.count_documents({})
+    # 마지막 페이지의 수 구하기 / 지금은 마지막 페이지 4임
+    last_page_num = math.ceil(tot_count / limit)
+
+    # 페이지 블럭을 4개 표기
+    block_size = 3
+    # 현재 블럭의 위치 (첫 번째 블럭이라면, block_num = 0)
+    block_num = int((page - 1) / block_size)
+    print(block_num)
+    # 현재 블럭의 맨 처음 페이지 넘버 (첫 번째 블럭이라면, block_start = 1, 두 번째 블럭이라면, block_start=6 )
+    block_start = (block_size * block_num) + 1
+    print(block_start)
+    # 현재 블럭의 맨 끝 페이지 넘버 (첫 번째 블럭이라면, block_end = 5)
+    block_end = block_start + (block_size - 1)
+    print(block_end)
+
+
+     #####################################
     beach_list = list(db.beach.find({}, {'_id': False}))
-    print(beach_list)
     rows = beach_list
+    print(rows)
 
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', user=user_info, rows=rows)
+        return render_template('index.html', user=user_info, rows=rows, datas=datas, limit=limit, page=page, block_start=block_start, block_end=block_end, last_page_num=last_page_num)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("home", msg="로그인 시간이 만료되었습니다."))
@@ -71,10 +100,37 @@ def main():
 @app.route('/home')
 def home():
     beach_list = list(db.beach.find({}, {'_id': False}))
-    print(beach_list)
+    # print(beach_list)
     rows = beach_list
     msg = request.args.get("msg")
-    return render_template('index.html', rows=rows)
+
+    board = db.beach
+    # 페이지값 (디폴트 = 1)
+    page = request.args.get("page", 1, type=int)
+    # 한 페이지 당 몇 개의 게시물을 출력할 것인가
+    limit = 15
+
+    datas = list(board.find({}).skip((page - 1) * limit).limit(limit))
+    print(datas)
+
+    # 게시글의 총 개수 세기 / 현재 51개 나옴 OK
+    tot_count = board.count_documents({})
+    # 마지막 페이지의 수 구하기 / 지금은 마지막 페이지 4임
+    last_page_num = math.ceil(tot_count / limit)
+
+    # 페이지 블럭을 4개 표기
+    block_size = 3
+    # 현재 블럭의 위치 (첫 번째 블럭이라면, block_num = 0)
+    block_num = int((page - 1) / block_size)
+    print(block_num)
+    # 현재 블럭의 맨 처음 페이지 넘버 (첫 번째 블럭이라면, block_start = 1, 두 번째 블럭이라면, block_start=6 )
+    block_start = (block_size * block_num) + 1
+    print(block_start)
+    # 현재 블럭의 맨 끝 페이지 넘버 (첫 번째 블럭이라면, block_end = 5)
+    block_end = block_start + (block_size - 1)
+    print(block_end)
+
+    return render_template('index.html', rows=rows, datas=datas, limit=limit, page=page, block_start=block_start, block_end=block_end, last_page_num=last_page_num)
 
 @app.route('/detail/posting')
 def detail_posting():
