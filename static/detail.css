@@ -1,112 +1,147 @@
-* {
-    font-family: 'Jua', sans-serif;
-}
-
 .background {
-    background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../static/bg.jpg");
     background-size: cover;
-    height: 500px;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    z-index: 0;
 }
-
-.header {
-    position: relative;
-    text-align: center;
-    top: 50px;
-    left: 80px;
-}
-
-.header h1 {
-    font-size: 4rem;
-    color: snow;
-}
-
-.header h1, .header button {
-    display: inline;
-}
-
-.header button {
-    position: relative;
-    left: 300px;
-    margin-left: 10px;
-}
-
-.container {
-    width: 40%;
-    max-width: 700px;
-    margin: 150px auto auto;
-    padding: 20px;
-    height: 400px;
-    background-color: white;
-
-    border: solid 1px gray;
+.wrapBeachInfo {
+    position:relative;
+    width:90%;
+    max-width: 800px;
+    margin: 30px auto 30px;
+    padding: 30px;
+    background-color: var(--color-sub);
     border-radius: 10px;
 }
+#btnRV {
+    position:absolute;
+    width: 100px;
+    height:100px;
+    top:0;
+    right:30px;
+    line-height:7.5;
+    border: 0;
+    background-color: var(--color-main);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+}
+#btnRV > a {
+    color:#fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+.titleBeach {
+    display:flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items:end;
 
-.container_post {
-    width: 80%;
-    max-width: 700px;
-    margin: 150px auto auto;
-    padding: 20px;
-    height: 100px;
-    background-color: white;
+    width:100%;
+    height:100px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+.titleBeach span {
+    display: inline-block;
+    height:30px;
+    font-size:16px;
+    line-height:26px;
+    background-color: var(--color-main);
+    padding:0 20px;
+    color:#fff;
+    border-radius: 15px;
 
-    border: solid 1px gray;
+}
+.wrapBox {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.boxInfo > ul {
+    padding-left:0;
+    padding-right: 10px;
+}
+.boxInfo > ul li {
+    margin-bottom: 10px;
+
+}
+.beachParah {
+    display: inline-block;
+    padding-left: 23px;
+    width:100%;
+}
+
+.wrapBeachInfo-review {
+    background-color: rgba(218, 223, 233, 0.7);
+}
+.wrapBeachInfo-review > ul {
+    width:100%;
+    padding:0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.wrapBeachInfo-review > ul > li:last-child {
+    width: calc(100% - 40px);
+    margin-left: 8px;
+}
+.posts_buttons {
+    text-align: right;
+    margin: 0;
+}
+#post-box .box {
+    background-color: #fff;
+}
+.boxVideo {
+    position:relative;
+    z-index: 999;
+}
+.boxVideo > p {
+    width: 90%;
+    max-width: 800px;
+    height: 450px;
+    background-color: var(--color-main);
     border-radius: 10px;
+    margin:0 auto;
+    overflow: hidden;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
 }
-
-.container_comment {
-    width: 80%;
-    max-width: 700px;
-    margin: -100px auto auto;
-    padding: 20px;
-    height: 100px;
-    background-color: white;
-    border-radius: 10px;
-}
-
-span.example {
-    color: gray;
-    font-size: 14px;
-}
-
-.btn-sparta {
-    color: #fff;
-    background-color: #e8344e;
-    border-color: #e8344e;
-}
-
-.btn-outline-sparta {
-    color: #e8344e;
-    background-color: transparent;
-    background-image: none;
-    border-color: #e8344e;
-}
-
-.test {
+.boxVideo iframe {
     width: 100%;
+    max-width: 800px;
+    height: 450px;
 }
 
-.test2 {
-    padding: 10px;
-    float: left;
-    width: 40%
-}
-
-img {
-    width: 100%;
-    height: 100%;
-}
-
-a {
-    text-decoration: none;
-}
-
-.input-group {
-    width: 37%;
-    margin: auto;
-}
-
-.media_comment{
-    width: 45%;
-    margin-left: 500px;
+@media (max-width: 768px) {
+    .wrapBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .boxInfo {
+        width:100%;
+    }
+    .boxInfo > ul {
+        width: 100%;
+        padding-right: 0px;
+    }
+    #map {
+        margin:0 auto;
+    }
+    .boxVideo iframe {
+        height: 320px;
+    }
+    .boxVideo > p {
+        height: 320px;
+    }
 }

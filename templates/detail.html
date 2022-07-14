@@ -1,95 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- Webpage Title -->
+    <title>Beach Detail | Beach Festival</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <meta property="og:title" content="Beach Festival - 올 여름 우리 바다와 함께"/>
+    <meta property="og:description" content="무더운 여름철 한국의 모든 해변을 쉽게 찾고, 먼저 방문한 사람들의 평가도 한 눈에 볼 수 있는 웹사이트입니다."/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Beach Festival</title>
+
+    <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Font Awesome CSS -->
+    <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
+    <script src="https://kit.fontawesome.com/ba20b620b8.js" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link href="{{ url_for('static', filename='reset.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='detail.css') }}" rel="stylesheet">
 
+    <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
-
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a76b02a3eab44eca245e0c8fba298673"></script>
+    <script src="{{ url_for('static', filename='detail_comment.js') }}"></script>
 </head>
-<body class="background">
-<div class="header">
-    <tr>
-        <a href="/">
-            <td><h1>Beach Festival</h1></td>
+<body>
+<div class="background"></div>
+
+<!-- :: 헤드 영역 -->
+<header class="wrapHeader">
+    <div class="boxRow">
+        <a href="/" style="text-align: center;">
+            <i class="fa-solid fa-rotate-left"></i>
+            <button class="btnStyle">돌아가기</button>
         </a>
-        <td>
-            <button type="button" class="btn btn-outline-success">Login</button>
-        </td>
-        <td>
-            <button type="button" class="btn btn-outline-warning">Sign Up</button>
-        </td>
-    </tr>
-</div>
-<div class="container">
-    <div class="d-flex justify-content-between align-items-end">
-        <div>
-            <h1 id="word" style="display: inline;">{{ word }} 해수욕장</h1>
-        </div>
-        <button id="btn-like" class="btn btn-sparta btn-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-            </svg>
-        </button>
     </div>
-    <hr>
-    <div class="test">
-        <div id="definitions">
-            <div class="test2">
-                <i>{{ beach_one['시도명'] }}</i>
-                <br> 위치 :{{ beach_one['시도명'] }} {{ beach_one['구군명'] }} {{ beach_one['정점명'] }}<br>
-                특징 : {{ beach_one['모래'] }}<br>
-                <span class="example">관련사이트 : {{ beach_one['관련사이트'] }} </span><br>
-                <span class="example">해수욕장 비상연락처 : {{ beach_one['해수욕장 비상연락처'] }} </span><br>
-                <span class="example">위도 : {{ beach_one['위도'] }} </span><br>
-                <span class="example">경도 : {{ beach_one['경도'] }} </span>
-            </div>
-        </div>
-        <div id="definitions">
-            <div class="test2">
-                <img src="https://cdn.pixabay.com/photo/2013/01/17/02/17/busan-75137__340.jpg">
-            </div>
-        </div>
+    <div class="boxRow">
+        <h1 class="logo_bottom">
+            <a href="/">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="" />
+                <strong>Beach Festival</strong>
+            </a>
+        </h1>
     </div>
+</header>
+
+<!-- :: 해수욕장 기본정보 영역 -->
+<div class="wrapBeachInfo">
+    <button id="btnRV">
+        <a href="https://www.goodchoice.kr/product/result?keyword={{ word }}" target="_blank">예약 <i class="fa-solid fa-link"></i></a>
+   </button>
+   <h1 id="word" class="titleBeach">{{ word }} 해수욕장&nbsp;<span><i class="fa-solid fa-location-dot"></i> {{ beach_one['시도명'] }}</span>
+   </h1>
+
+    <div class="wrapBox">
+        <div id="definitions" class="boxInfo">
+            <ul>
+                <li>
+                    <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;
+                    <strong>위치 : </strong>{{ beach_one['시도명'] }} {{ beach_one['구군명'] }} {{ beach_one['정점명'] }}
+                </li>
+
+                {% if beach_one['모래'] == None  %}
+                    <li>
+                        <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;
+                        <strong>해변 타입 : </strong><i style="color:#0F4C81FF;">정보가 없어요...T_T</i>
+                    </li>
+                {% else %}
+                    <li>
+                        <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;
+                        <strong>해변 타입 : </strong>{{ beach_one['모래'] }}
+                    </li>
+                {% endif %}
+
+                {% if beach_one['해수욕장 비상연락처'] == None %}
+                    <li>
+                        <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;
+                        <strong>해수욕장 비상연락처 : </strong><i style="color:#0F4C81FF;">정보가 없어요...T_T</i>
+                    </li>
+                {% else %}
+                    <li>
+                        <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;
+                        <strong>해수욕장 비상연락처 : </strong><br /><span class="beachParah">{{ beach_one['해수욕장 비상연락처'] }}
+                        </span>
+                   </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="boxInfo">
+            <div id="map" style="width:400px;height:300px;"></div>
+            <script>
+                var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+                var options = { //지도를 생성할 때 필요한 기본 옵션
+                    center: new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }}), //지도의 중심좌표.
+                    level: 7 //지도의 레벨(확대, 축소 정도)
+                };
+
+                var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+                var markerPosition  = new kakao.maps.LatLng({{ beach_one['위도'] }}, {{ beach_one['경도'] }});
+                var marker = new kakao.maps.Marker({position: markerPosition});
+                marker.setMap(map);
+            </script>
+
+        </div>
+
+    </div>
+
 </div>
 
-<section class="section">
-    <article class="media_comment">
-        <figure class="media-left" style="align-self: center">
-            <a class="image is-32x32" href="/user/{{ user_info.username }}">
+<!-- :: 영상 영역 -->
+<section class="boxVideo">
+    <p align="middle">
+    <iframe src="https://www.youtube.com/embed/xRbPAVnqtcs?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
+    </p>
+</section>
+
+<!-- :: comment 작성 영역 -->
+<section class="wrapBeachInfo wrapBeachInfo-review">
+    <ul>
+        <li>
+            <a class="image is-32x32">
                 <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
             </a>
-        </figure>
-        <div class="media-content">
-            <div class="field">
-                <p class="control">
-	                  <input id="input-post" class="input is-rounded" placeholder="무슨 생각을 하고 계신가요?"
-	                         onclick='$("#modal-post").addClass("is-active")'>                </p>
-            </div>
-        </div>
-    </article>
+        </li>
+        <li>
+            <input id="textarea-post" class="input is-rounded" placeholder="{{ word }} 해수욕장은 어떠셨나요?">
+        </li>
+    </ul>
+    <p class="posts_buttons">
+        <button class="btnStyle" onclick="post()">업로드 <i class="fa-solid fa-paper-plane"></i></button>
+    </p>
 </section>
-<section class="section">
+
+<!-- :: comment 영역 -->
+<section class="wrapBeachInfo">
     <div id="post-box" class="container_comment">
         <div class="box">
             <article class="media">
                 <div class="media-left">
-                    <a class="image is-64x64" href="#">
+                    <a class="image is-64x64">
                         <img class="is-rounded"
-                             src={{ url_for("static", filename="profile_pics/profile_placeholder.png") }} alt="Image">
+                             src= "{{ url_for("static", filename=user_info.profile_pic_real) }}" alt="Image">
                     </a>
                 </div>
                 <div class="media-content">
@@ -103,7 +171,9 @@
                     <nav class="level is-mobile">
                         <div class="level-left">
                             <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('', 'heart')">
-                                <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>&nbsp;<span class="like-num">2.7k</span>
+                                <span class="icon is-small"><i class="fa fa-heart"
+                                                               aria-hidden="true"></i></span>&nbsp;<span
+                                    class="like-num">2.7k</span>
                             </a>
                         </div>
 
@@ -114,6 +184,20 @@
 
     </div>
 </section>
+
+<!-- :: 푸터 영역 -->
+<footer class="footer">
+  <div>
+    <p>
+      항해99 8기 A반 10조 웹개발 미니 프로젝트<br/>
+        <strong>Beach Festival</strong><br /> by <br /><br />
+        Team Leader & Back-end <strong>박상욱</strong><br />
+        Back-end <strong>정원용</strong> <br />
+        Front-end <strong>강도욱</strong> <br />
+        Front-end <strong>나유진</strong>
+    </p>
+  </div>
+</footer>
 </body>
-</html>{##}
+</html>
 

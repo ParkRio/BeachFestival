@@ -1,0 +1,27 @@
+/* 웹 폰트 설정 */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
+
+:root {
+    --color-main: #0f4c81;
+    --color-sub: #dadfe9;
+    --color-black: #282308;
+}
+
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    /*color:var(--color-black);*/
+    box-sizing: border-box;
+}
+a {
+    text-decoration: none;
+}
+h1, h2, h3, h1 strong, .text_logo, .modal-title, .modal-title > span {
+    font-family: 'Nanum Brush Script', cursive;
+    text-shadow: 3px 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.button.is-sparta.is-outlined {
+    background-color: #fff;
+    border: 1px solid var(--color-main);
+    color: var(--color-main) !important;
+}

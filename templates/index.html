@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- Webpage Title -->
+    <title>Home | Beach Festival</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <meta property="og:title" content="Beach Festival - 올 여름 우리 바다와 함께"/>
+    <meta property="og:description" content="무더운 여름철 한국의 모든 해변을 쉽게 찾고, 먼저 방문한 사람들의 평가도 한 눈에 볼 수 있는 웹사이트입니다."/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Beach Festival</title>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Font Awesome CSS -->
+    <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
+    <script src="https://kit.fontawesome.com/ba20b620b8.js" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link href="{{ url_for('static', filename='reset.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
 
+    <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
     <script>
-        let rows = {{ rows|tojson }};
+
+        // scroll event
+        $(window).scroll(function(){
+            const y = $(document).scrollTop()
+
+            if (y >= 250 ) {
+                // 스크롤 이벤트가 발생하면, 로고가 상단으로 고정 되게.... 제일 마지막에
+
+            }
+        })
+
+        // 해변 검색 기능 구현 부분
+        let rows = {{ rows | tojson }};
         let rows_list = [];
         for (let i = 0; i < rows.length; i++) {
             rows_list.push(rows[i]['정점명'])
@@ -26,6 +57,7 @@
         console.log(rows_list)
 
         function find_beach() {
+
             let word = $('#input_word').val()
             if (rows_list.includes(word)) {
                 // 리스트에 하이라이트
@@ -34,200 +66,162 @@
                 $(`#word-${word}`).siblings().removeClass("highlight")
                 $(`#word-${word}`)[0].scrollIntoView()
 
+                // 선택되서 내려갈때 스크롤 위치값 확인 필요 ㅠㅠ
+
             } else {
                 alert("정확한 해변명을 입력해주세요.")
             }
         }
-    </script>
-    <script>
 
-        $(document).ready(function () {
-            //insert_DB()
-            // get_allBeach_list()
-
-        })
-        {##}
-        {#function insert_DB() {#}
-        {#     $.ajax({#}
-        {#         type: "GET",#}
-        {#         url: "/",#}
-        {#         data: {},#}
-        {#         success: function (response) {#}
-        {#         }#}
-        {#     })#}
-        {# }#}
+        {% if msg %}
+            alert("{{msg}}")
+        {% endif %}
 
     </script>
-    <script>
-        // {% if msg %}
-        //     alert("{{ msg }}")
-        // {% endif %}
-
-        function sign_in() {
-            let username = $("#input-username").val()
-            let password = $("#input-password").val()
-
-            if (username == "") {
-                $("#help-id-login").text("아이디를 입력해주세요.")
-                $("#input-username").focus()
-                return;
-            } else {
-                $("#help-id-login").text("")
-            }
-
-            if (password == "") {
-                $("#help-password-login").text("비밀번호를 입력해주세요.")
-                $("#input-password").focus()
-                return;
-            } else {
-                $("#help-password-login").text("")
-            }
-            $.ajax({
-                type: "POST",
-                url: "/sign_in",
-                data: {
-                    username_give: username,
-                    password_give: password
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        $.cookie('mytoken', response['token'], {path: '/'});
-                        window.location.replace("/")
-                    } else {
-                        alert(response['msg'])
-                    }
-                }
-            });
-        }
-
-        function sign_up() {
-            let username = $("#input-username").val()
-            let password = $("#input-password").val()
-            let password2 = $("#input-password2").val()
-            console.log(username, password, password2)
-
-
-            if ($("#help-id").hasClass("is-danger")) {
-                alert("아이디를 다시 확인해주세요.")
-                return;
-            } else if (!$("#help-id").hasClass("is-success")) {
-                alert("아이디 중복확인을 해주세요.")
-                return;
-            }
-
-            if (password == "") {
-                $("#help-password").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#input-password").focus()
-                return;
-            } else if (!is_password(password)) {
-                $("#help-password").text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자").removeClass("is-safe").addClass("is-danger")
-                $("#input-password").focus()
-                return
-            } else {
-                $("#help-password").text("사용할 수 있는 비밀번호입니다.").removeClass("is-danger").addClass("is-success")
-            }
-            if (password2 == "") {
-                $("#help-password2").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#input-password2").focus()
-                return;
-            } else if (password2 != password) {
-                $("#help-password2").text("비밀번호가 일치하지 않습니다.").removeClass("is-safe").addClass("is-danger")
-                $("#input-password2").focus()
-                return;
-            } else {
-                $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
-            }
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/save",
-                data: {
-                    username_give: username,
-                    password_give: password
-                },
-                success: function (response) {
-                    alert("회원가입을 축하드립니다!")
-                    window.location.replace("/")
-                }
-            });
-
-        }
-
-        function toggle_sign_up() {
-            $("#sign-up-box").toggleClass("is-hidden")
-            $("#div-sign-in-or-up").toggleClass("is-hidden")
-            $("#btn-check-dup").toggleClass("is-hidden")
-            $("#help-id").toggleClass("is-hidden")
-            $("#help-password").toggleClass("is-hidden")
-            $("#help-password2").toggleClass("is-hidden")
-        }
-
-        function is_nickname(asValue) {
-            var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
-            return regExp.test(asValue);
-        }
-
-        function is_password(asValue) {
-            var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
-            return regExp.test(asValue);
-        }
-
-        function check_dup() {
-            let username = $("#input-username").val()
-            console.log(username)
-            if (username == "") {
-                $("#help-id").text("아이디를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#input-username").focus()
-                return;
-            }
-            if (!is_nickname(username)) {
-                $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
-                $("#input-username").focus()
-                return;
-            }
-            $("#help-id").addClass("is-loading")
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/check_dup",
-                data: {
-                    username_give: username
-                },
-                success: function (response) {
-
-                    if (response["exists"]) {
-                        $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
-                        $("#input-username").focus()
-                    } else {
-                        $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
-                    }
-                    $("#help-id").removeClass("is-loading")
-
-                }
-            });
-        }
-
-    </script>
-
 </head>
 <body>
-<div class="background">
-<section class="contents">
-<div class="header">
-    <tr>
-        <td>
-            <a herf="/">
-                <h1>Beach Festival</h1>
-            </a>
-        </td>
-        <td>
-            <button type="button" class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>
-        </td>
-    </tr>
+<div class="backgroundVideo">
+        <video autoplay loop muted preload="auto">
+            <source src="{{ url_for('static', filename='bg_beach.mp4') }}" type="video/mp4">
+        </video>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!-- :: 헤드 영역 -->
+<header class="wrapHeader">
+    <div class="boxRow">
+        <!--<h1 class="logo_top">
+            <a href="/">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="" />
+                <strong>Beach Festival</strong>
+            </a>
+        </h1>-->
+        {% if user %}
+            <button type="button" class="btnStyle" data-bs-toggle="modal" data-bs-target="#InfoModal">내 정보 <i class="fa-solid fa-user"></i></button>
+        {% else %}
+            <button type="button" class="btnStyle" data-bs-toggle="modal" data-bs-target="#LoginModal">로그인 <i class="fa-solid fa-right-to-bracket"></i></button>
+        {% endif %}
+    </div>
+    <div class="boxRow">
+        <h1 class="logo_bottom">
+            <a href="/">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="" />
+                <strong>Beach Festival</strong>
+            </a>
+        </h1>
+    </div>
+</header>
+
+<!-- :: 메인 컨텐츠 영역 -->
+<section class="contents">
+
+{% if user %}
+<!-- :: 내 정보 모달 -->
+<div class="modal fade" id="InfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-top">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <nav class="modalContents">
+                   <a class="image is-64x64">
+                        <img class="is-rounded"
+                             src= "{{ url_for('static', filename=user.profile_pic_real) }}" alt="Image">
+                    </a>
+                    <h5 class="modal-title" id="exampleModalLabel"><strong>{{ user['profile_name'] }}님 <i class="fa fa-heart" aria-hidden="true"></i></strong></h5>
+                    <h5 style="font-size: 18px; margin-top: 5px; font-weight: 400;">{{ user.profile_info }}</h5>
+                </nav>
+                <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
+                    <a class="button level-item has-text-centered is-sparta btnStyle" aria-label="edit"
+                       onclick='$("#modal-edit").addClass("is-active"); $("#InfoModal").hide();'>
+                        프로필 수정&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-pencil"
+                                                                               aria-hidden="true"></i></span>
+                    </a>
+
+                    <a class="button level-item has-text-centered is-sparta is-outlined btnStyle" aria-label="logout"
+                       onclick="sign_out()">
+                        로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out"
+                                                                             aria-hidden="true"></i></span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- :: 내 정보 수정 모달 부분 -->
+<div class="modal" id="modal-edit">
+    <div class="modal-background"></div>
+    <div class="modal-content modal-content-revise">
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="field">
+                        <label class="label" for="input-name">이름</label>
+
+                        <div>
+                            <input id="input-name" type="text" class="input inputStyle"
+                                   placeholder="홍길동" value="{{ user.profile_name }}">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="input-pic">프로필 사진</label>
+
+                        <div class="control is-expanded">
+                            <div class="file has-name">
+                                <label class="file-label" style="width:100%">
+                                    <input id="input-pic" class="file-input inputStyle" type="file"
+                                           name="resume">
+                                    <span class="file-cta"><span class="file-icon"><i
+                                            class="fa fa-upload"></i></span>
+                                <span class="file-label">파일 선택</span>
+                            </span>
+                                    <span id="file-name" class="file-name"
+                                          style="width:100%;max-width:100%; background-color: #fff;">{{ user.profile_pic }}</span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="textarea-about">나에 대해 한 줄 소개를 해주세요.</label>
+
+                        <div>
+
+                        <textarea id="textarea-about" class="textarea"
+                                  placeholder="자기소개하기">{{ user.profile_info }}</textarea>
+                        </div>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a class="button is-sparta btnStyle" onclick="update_profile()">업데이트</a>
+                            </div>
+                            <div class="level-item">
+                                <a class="button is-sparta is-outlined btnStyle"
+                                   onclick='$("#modal-edit").removeClass("is-active")'>취소</a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </article>
+        </div>
+    </div>
+    <!-- <button class="modal-close is-large" aria-label="close"
+            onclick='$("#modal-edit").removeClass("is-active")'></button> -->
+</div>
+
+{% else %}
+
+<!-- :: 로그인 회원가입 모달 부분 -->
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Beach Festival</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><img class="imgLogoModal" src="{{ url_for('static', filename='logo.png') }}" alt="" /><br /><span>올 여름 우리 바다에서~!</span><br />Beach Festival</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -237,11 +231,11 @@
                     <div class="content">
                         <div class="field has-addons">
                             <div class="control has-icons-left" style="width:100%">
-                                <input id="input-username" class="input" type="text" placeholder="아이디">
+                                <input id="input-username" class="input inputStyle" type="text" placeholder="아이디">
                                 <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                             </div>
                             <div id="btn-check-dup" class="control is-hidden">
-                                <button class="button is-sparta" onclick="check_dup()">중복확인</button>
+                                <button id="btnCheckdup" class="button is-sparta btnStyle" onclick="check_dup()">중복확인</button>
                             </div>
 
                         </div>
@@ -250,7 +244,7 @@
 
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input id="input-password" class="input" type="password" placeholder="비밀번호">
+                                <input id="input-password" class="input inputStyle" type="password" placeholder="비밀번호">
                                 <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                             </div>
                             <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용
@@ -261,16 +255,16 @@
                     </div>
                     <div id="div-sign-in-or-up" class="has-text-centered">
                         <nav class="level is-mobile">
-                            <button class="level-item button is-sparta" onclick="sign_in()">
+                            <button class="level-item button is-sparta btnStyle" onclick="sign_in()">
                                 로그인
                             </button>
 
                         </nav>
                         <hr>
-                        <h4 class="mb-3">아직 회원이 아니라면</h4>
+                        <p class="mb-3">아직 회원이 아니시라면</p>
                         <nav class="level is-mobile">
 
-                            <button class="level-item button is-sparta is-outlined"
+                            <button class="level-item button is-sparta is-outlined btnStyle"
                                     onclick="toggle_sign_up()">
                                 회원가입하기
                             </button>
@@ -281,7 +275,7 @@
                         <div class="mb-5">
                             <div class="field">
                                 <div class="control has-icons-left" style="width:100%">
-                                    <input id="input-password2" class="input" type="password"
+                                    <input id="input-password2" class="input inputStyle" type="password"
                                            placeholder="비밀번호 재입력">
                                     <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                                 </div>
@@ -290,10 +284,10 @@
                             </div>
                         </div>
                         <nav class="level is-mobile">
-                            <button class="level-item button is-sparta" onclick="sign_up()">
+                            <button class="level-item button is-sparta btnStyle" onclick="sign_up()">
                                 회원가입
                             </button>
-                            <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                            <button class="level-item button is-sparta is-outlined btnStyle" onclick="toggle_sign_up()">
                                 취소
                             </button>
                         </nav>
@@ -304,56 +298,94 @@
             </article>
         </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
 </div>
+{% endif %}
+
+<!-- :: 검색 기능 부분 -->
 <div class="select-options">
     <div class="input-group rounded">
-        <input type="search" class="form-control rounded" id="input_word" placeholder="해수욕장 이름을 입력해주세요."
+        <input type="search" class="inputSearch form-control rounded" id="input_word" placeholder="해수욕장 이름을 입력해주세요."
                aria-label="Search"
                aria-describedby="search-addon"/>
-        <button type="button" class="btn btn-outline-primary" onclick="find_beach()">검색</button>
+        <button type="button" class="btn btnStyle" onclick="find_beach()">검색 &nbsp;<i class="fa fa-search"></i></button>
     </div>
 </div>
-<table class="table">
+
+<!-- :: 해수욕장 리스트 부분 -->
+{% if datas|length > 0 %}
+<table class="table" style="background-color: rgba(255, 255, 255, 0.7); ">
     <thead class="thead-light">
     <tr>
-        <th scope="col" style="width:30%">정점명</th>
-        <th scope="col">주소</th>
-
+        <th scope="col" style="width:30%">해수욕장</th>
+        <th scope="col" style="width:40%">지역</th>
+        <th scope="col" style="width:30%">예약</th>
     </tr>
     </thead>
+    {% for data in datas %}
     <tbody id="tbody-box">
-    {% for row in rows %}
-        <tr id="word-{{ row['정점명'] }}">
-            <td><a href="http://localhost:5000/detail/{{ row['정점명'] }}">{{ row['정점명'] }}</a></td>
+        <tr id="word-{{ data['정점명'] }}">
             <td>
-                {{ row['시도명'] }} {{ row['구군명'] }} {{ row['정점명'] }}
-                &nbsp;&nbsp;
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="red" fill="currentColor"
-                     class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                </svg>
+                <a href="/detail/{{ data['정점명'] }}">{{ data['정점명'] }}</a>
+            </td>
+            <td>
+                {{ data['시도명'] }} {{ data['구군명'] }} {{ data['정점명'] }}
+            </td>
+            <td>
+                <a href="https://www.goodchoice.kr/product/result?keyword={{ data['정점명'] }}" target="_blank">
+                예약하기
+                <span class="icon is-small"><i class="fa fa-heart" aria-hidden="true"></i></span>
+                </a>
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<div class="paging-div">
-    <nav aria-label="...">
-      <ul class="pagination pagination-lg">
-        <li class="page-item active" aria-current="page">
-          <span class="page-link">1</span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-      </ul>
-    </nav>
-</div>
+
+<!-- :: 페이지 버튼 부분 -->
+{#하단 페이지네이션#}
+<ul class="boxPaging">
+{% if block_start - 1 > 0 %}
+    <li class="paging pagingPrev"><a href="{{url_for('home', page=block_start - 1)}}"><i class="fa-solid fa-angle-left"></i></a></li>
+{% endif %}
+
+{% for i in range(block_start, block_end + 1) %}
+    {% if i > last_page_num %}
+
+    {% else %}
+        {% if i == page %}
+             <li class="paging pagingFocus"><b>{{ i }}</b></li>
+        {% else %}
+             <li class="paging"><a href="{{ url_for('home', page=i) }}">{{ i }}</a></li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if block_end < last_page_num %}
+    <li class="paging pagingPrev"><a href="{{ url_for('home', page=block_end + 1) }}"><i class="fa-solid fa-angle-right"></i></a></li>
+{% endif %}
+
+{% else %}
+<h3>데이터가 존재하지 않습니다.</h3>
+{% endif %}
+</ul>
+{# 여기까지 하단 페이지네이션#}
+
 </section>
-</div>
+
+<!-- :: 푸터 영역 -->
+<footer class="footer">
+  <div>
+    <p>
+      항해99 8기 A반 10조 웹개발 미니 프로젝트<br/>
+        <strong>Beach Festival</strong><br /> by <br /><br />
+        Team Leader & Back-end <strong>박상욱</strong><br />
+        Back-end <strong>정원용</strong> <br />
+        Front-end <strong>강도욱</strong> <br />
+        Front-end <strong>나유진</strong>
+    </p>
+  </div>
+</footer>
 </body>
 </html>

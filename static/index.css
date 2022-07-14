@@ -1,82 +1,174 @@
-* {
-    font-family: 'Jua', sans-serif;
-}
-
-body {
-    position: relative;
-}
-
-.background {
-    background-image: url("https://cdn.pixabay.com/photo/2016/11/19/12/11/surfer-1838958_960_720.jpg");
-    background-size: cover;
-    position: absolute;
+.backgroundVideo {
+    position: fixed;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
     opacity: 1;
+    z-index: 0;
+    overflow: hidden;
+}
+.backgroundVideo video {
+    height:100%;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 0;
+    object-fit: cover;
+    width:100%;
+    height:100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.modal-backdrop {
-    position: relative;
+.wrapHeader {
+    position:relative;
+    width:100%;
+    height:230px;
+    z-index:1000;
+    padding-top:80px;
 }
-
-.contents {
-    position: relative;
+.box {
+    background-color: var(--color-sub);
+    box-shadow: none;
 }
+.boxRow {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    padding: 0 20px;
+}
+.boxRow:first-child {
+    position:fixed;
+    width:100px;
+    height:120px;
+    justify-content: center;
+    align-items: end;
+    right:30px;
+    top:0;
+    background-color: var(--color-main);
+    padding: 40px 0 10px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.boxRow:first-child button,
+.boxRow:first-child a {
+    border:0;
+    box-shadow: none;
+    width:100%;
+    padding:0;
+    color:#fff;
 
-.header {
-    position: relative;
+}
+.boxRow:last-child {
+    height: 150px;
+}
+.boxRow h1 {
+    height:150px;
+}
+.boxRow h1 > a {
+    display: inline-block;
+    height:100%;
+    line-height: 1;
     text-align: center;
-    top: 50px;
-    left: 30px
+}
+.boxRow h1 img {
+    display:inline-block;
+    width:100px;
+    height:100px;
+    margin-bottom: 5px;
+}
+.boxRow h1 strong {
+    display: inline-block;
+    width:100%;
+    font-size: 45px;
+    line-height: 45px;
+    color:var(--color-main);
+}
+.btnStyle {
+    height:45px;
+    text-align: center;
+    line-height: 45px;
+    padding:0 25px;
+    border:0;
+    border-radius:23px;
+    background-color: var(--color-main);
+    color:#fff;
+    font-weight: bold;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+.btnStyle:hover {
+    color:#fff;
 }
 
-.header h1 {
-    font-size: 4rem;
-    color: snow;
-}
-
-.header h1, .header button {
-    display: inline;
-}
-
-.header button {
-    position: relative;
-    left: 300px;
-    margin-left: 10px;
-}
-
+/* 검색 부분 */
 .select-options {
-    top: 5rem;
     width: 500px;
-    margin: 100px auto auto auto;
+    margin: 50px auto auto auto;
+}
+.inputSearch {
+    height: 45px;
+    border-top-left-radius: 23px !important;
+    border-bottom-left-radius: 23px !important;
+    text-indent: 30px;
+}
+
+/* 해수욕장 리스트 부분 */
+.fa-heart, .like-num {
+    color: var(--color-main);
 }
 
 .table {
-    width: 80%;
+    width: 90%;
     max-width: 800px;
     margin: 50px auto;
     table-layout: fixed;
     background-color: snow;
-    border-radius: 30px;
+    border-radius: 10px;
 }
 
 .table th {
     border-top-style: none;
+    padding:15px 0 12px;
 }
-
+tr {
+    text-align: center;
+}
+thead > tr {
+    text-align: center !important;
+}
+tr > td:first-child {
+    text-indent: 30px;
+}
+tr > td:last-child {
+    padding-right: 30px;
+    text-align: right;
+}
+tbody tr > td:first-child {
+    text-align: left;
+}
 td {
     background-color: white;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
 
-td > a, a:visited, a:hover, a:active {
+}
+td > a, td > a:visited {
     color: black;
 }
-
+td > a:hover, td > a:active {
+    font-weight: bold;
+    text-decoration: underline;
+    color: var(--color-main);
+}
+.table thead th {
+    border-bottom: 1px solid var(--color-main)
+}
 thead:first-child tr:first-child th:first-child {
     border-radius: 10px 0 0 0;
 }
@@ -93,37 +185,186 @@ tbody:last-child tr:last-child td:last-child {
     border-radius: 0 0 10px 0;
 }
 
-tr.highlight > td {
-    background-color: darkorange;
-    color: white;
-}
-
-tr.highlight > td > a {
-    background-color: darkorange;
-    color: white;
+tr.highlight > td, tr.highlight > td > a {
+    background-color: var(--color-main);
+    color: #fff;
 }
 
 .paging-div {
-    padding: 15px 0 5px 10px;
-    display: table;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    margin:0 auto 50px;
     text-align: center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-.button.is-sparta {
-    background-color: #e8344e;
-    border-color: transparent;
-    color: #fff !important;
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: var(--color-main);
+    border-color: var(--color-main);
+    font-weight:bold;
 }
-
-.button.is-sparta.is-outlined {
-    background-color: transparent;
-    border-color: #e8344e;
-    color: #e8344e !important;
+.page-link {
+    color: var(--color-main);
 }
-
+.page-link:hover {
+    color: var(--color-main);
+}
+.pagination-lg .page-item:first-child .page-link {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.pagination-lg .page-item:last-child .page-link {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.pagination-lg .page-link {
+    padding: 10px 20px;
+    font-size: 18px;
+}
 .help {
     color: gray;
 }
+.contents {
+    position: relative;
+}
+.footer {
+    position:relative;
+    padding: 20px 0 20px;
+    z-index: 999;
+    background-color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    margin-top: 50px;
+
+}
+
+/* :: 로그인 회원가입 모달 부분 */
+.modal-content {
+    border: 1px solid var(--color-sub);
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+    background-color: rgba(218, 223, 233, 1);
+    border-radius: 10px;
+}
+.modal-title {
+    width:100%;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    color:var(--color-main);
+    line-height: 40px;
+}
+.imgLogoModal {
+    width:150px;
+}
+.input.inputStyle {
+    border-radius: 23px;
+    height: 45px;
+    line-height: 45px;
+}
+.modal-title > span {
+    font-size: 25px;
+}
+.modal-title > strong {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 22px;
+    font-weight:400;
+    text-align:center;
+    text-shadow: none;
+}
+.modal-title-left {
+    text-align: left;
+}
+.modalContents {
+    display: flex;
+    flex-direction : column;
+    justify-content: center;
+    align-items: center;
+
+    text-align:center;
+}
+.modalContents .image.is-64x64 {
+    height: 100px;
+    width: 100px;
+}
+#InfoModal .modal-header-top {
+    max-height: 25px;
+}
+
+#input-username, #btnCheckdup {
+    border-radius: 23px;
+}
+#btnCheckdup {
+    margin-left:10px;
+}
+.control.has-icons-left .icon.is-left {
+    left: 5px;
+    top: 3px;
+}
+.modal-content-revise {
+    max-width:400px;
+}
+.modal-backdrop {
+    position: relative;
+}
+#LoginModal .modal-header .btn-close {
+    margin-bottom:210px;
+}
+.modal-content {
+    margin:0;
+}
+.boxPaging {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+.paging {
+    box-sizing: border-box;
+    width:40px;
+    height:40px;
+    background-color:var(--color-sub);
+    text-align:center;
+    line-height: 40px;
+    margin-left:5px;
+    overflow:hidden;
+    border-radius:3px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+}
+.paging:last-child {
+    margin-right:5px;
+}
+.paging > a {
+    display: block;
+    width:100%;
+    height:100%;
+    color:var(--color-main);
+}
+.paging.pagingFocus {
+    background-color:var(--color-main);
+}
+.paging.pagingFocus b {
+    color:#fff;
+}
+.pagingPrev, .pagingNext {
+    background-color: transparent;
+    color:var(--color-main);
+    box-shadow: none;
+}
+.pagingPrev:hover,
+.pagingNext:hover,
+.paging:hover {
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.4);
+    cursor:pointer;
+}
+
+
+@media (max-width: 768px) {
+    .select-options {
+        width: 90%;
+    }
+}
+
 
